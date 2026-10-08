@@ -5,10 +5,7 @@ from app.schemas.test_evaluation import (
 from app.services.test_evaluator import evaluate_test
 
 
-def make_question(
-    correct_answer: int,
-    selected_answer: int | None,
-):
+def make_question(correct_answer: int):
     return SubmittedQuestion(
         question="What is 2 + 2?",
         topic="Math",
@@ -20,18 +17,20 @@ def make_question(
         ],
         correct_answer=correct_answer,
         explanation="2 + 2 equals 4.",
-        selected_answer=selected_answer,
     )
 
 
 def test_all_answers_correct():
     questions = [
-        make_question(1, 1),
-        make_question(1, 1),
-        make_question(1, 1),
+        make_question(1),
+        make_question(1),
+        make_question(1),
     ]
 
-    request = TestEvaluationRequest(questions=questions)
+    request = TestEvaluationRequest(
+        questions=questions,
+        answers=[1, 1, 1],
+    )
 
     result = evaluate_test(request)
 
@@ -43,12 +42,15 @@ def test_all_answers_correct():
 
 def test_all_answers_wrong():
     questions = [
-        make_question(1, 0),
-        make_question(1, 0),
-        make_question(1, 0),
+        make_question(1),
+        make_question(1),
+        make_question(1),
     ]
 
-    request = TestEvaluationRequest(questions=questions)
+    request = TestEvaluationRequest(
+        questions=questions,
+        answers=[0, 0, 0],
+    )
 
     result = evaluate_test(request)
 
@@ -59,10 +61,13 @@ def test_all_answers_wrong():
 
 def test_unanswered_question():
     questions = [
-        make_question(1, None),
+        make_question(1),
     ]
 
-    request = TestEvaluationRequest(questions=questions)
+    request = TestEvaluationRequest(
+        questions=questions,
+        answers=[None],
+    )
 
     result = evaluate_test(request)
 
