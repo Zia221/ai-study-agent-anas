@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+
+*.db
+*.sqlite
+*.sqlite3
+
+uploads/
+chroma_data/
+
+__pycache__/
+.pytest_cache/
+.venv/
+
+node_modules/
+dist/
